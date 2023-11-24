@@ -8,7 +8,7 @@ namespace EBlog.DAL
 {
     public class DbSessionDAL : IDbSessionDAL
     {
-        private const int SUCCESSFUL_CREATED = 0;
+        private const int SUCCESSFUL_OPERATION = 0;
         private readonly ApplicationContext db;
 
         public DbSessionDAL()
@@ -23,7 +23,7 @@ namespace EBlog.DAL
 
                 await db.Sessions.AddAsync(model);
                 await db.SaveChangesAsync();
-                return SUCCESSFUL_CREATED;
+                return SUCCESSFUL_OPERATION;
             
         }
 
@@ -45,7 +45,7 @@ namespace EBlog.DAL
 
                 db.Sessions.Update(model);
                 await db.SaveChangesAsync();
-                return SUCCESSFUL_CREATED;
+                return SUCCESSFUL_OPERATION;
             
         }
     }

@@ -18,7 +18,7 @@ namespace EBlog.BL.General
             options.HttpOnly = true;
             options.Secure = true;
             if (days > 0)
-                options.Expires = DateTimeOffset.UtcNow.AddDays(30);
+                options.Expires = DateTimeOffset.UtcNow.AddDays(days);
             httpContextAccessor?.HttpContext?.Response.Cookies.Append(cookieName, cookieValue, options);
         }
 
@@ -27,7 +27,7 @@ namespace EBlog.BL.General
             CookieOptions options = new CookieOptions();
             options.Path = "/";
             if (days > 0)
-                options.Expires = DateTimeOffset.UtcNow.AddDays(30);
+                options.Expires = DateTimeOffset.UtcNow.AddDays(days);
             httpContextAccessor?.HttpContext?.Response.Cookies.Append(cookieName, cookieValue, options);
 
         }

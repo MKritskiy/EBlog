@@ -16,10 +16,9 @@ namespace EBlog.Controllers
             this.currentUser = currentUser;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var isLoggedIn = await currentUser.IsLoggedInAsync();
-            return View(isLoggedIn);
+            return View();
         }
 
         public IActionResult Privacy()
