@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  eblog:
+    image: ${DOCKER_REGISTRY-}eblog
+    build:
+      context: .
+      dockerfile: EBlog/Dockerfile
+
+  postgres:
+    container_name: postgres
+    build: ./db
+    ports:
+     - '5432:5432'
+
+
+  eblogtest:
+    image: ${DOCKER_REGISTRY-}eblogtest
+    build:
+      context: .
+      dockerfile: EblogTest\Dockerfile
+

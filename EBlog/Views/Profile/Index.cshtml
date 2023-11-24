@@ -1,0 +1,22 @@
+﻿@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<div>
+    <form action="/profile" method="post" enctype="multipart/form-data">
+        <p>
+            <div class="error">@Html.ValidationMessage("Form")</div>
+        </p>
+        <p>
+            <label>Имя профиля</label>
+            <input name="Login" type="text" value="@Model.Login" />
+            <div class="error">@Html.ValidationMessageFor(m => m.Login)</div>
+        </p>
+        <p>
+            <input type="file" name="ProfileImage"/>
+        </p>
+        <button>Авторизоваться</button>
+    </form>
+</div>

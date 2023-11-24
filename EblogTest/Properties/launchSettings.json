@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EblogTest": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
