@@ -4,9 +4,11 @@ using EBlog.ViewModels;
 using EBlog.ViewMapper;
 using EBlog.BL.Exeption;
 using EBlog.Models;
+using EBlog.Middleware;
 
 namespace EBlog.Controllers
 {
+    [SiteNotAuthorize()]
     public class RegisterController : Controller
     {
         private readonly IAuth auth;
@@ -24,6 +26,7 @@ namespace EBlog.Controllers
 
         [HttpPost]
         [Route("/register")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> IndexSave(RegisterViewModel model)
         {
             if (ModelState.IsValid)

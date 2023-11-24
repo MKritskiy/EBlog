@@ -1,6 +1,4 @@
-using EBlog.DAL.Models;
 using EBlog.Database;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,23 +6,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //builder.Services.AddDbContext<ApplicationContext>();
-builder.Services.AddScoped<EBlog.BL.Auth.IAuth, EBlog.BL.Auth.Auth>();
 builder.Services.AddSingleton<EBlog.BL.Auth.IEncrypt, EBlog.BL.Auth.Encrypt>();
-builder.Services.AddScoped<EBlog.BL.Auth.ICurrentUser, EBlog.BL.Auth.CurrentUser>();
 builder.Services.AddSingleton<EBlog.DAL.IAuthDAL, EBlog.DAL.AuthDAL>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<EBlog.DAL.IDbSessionDAL, EBlog.DAL.DbSessionDAL>();
+builder.Services.AddSingleton<EBlog.DAL.IUserTokenDAL, EBlog.DAL.UserTokenDAL>();
+builder.Services.AddScoped<EBlog.BL.Auth.IAuth, EBlog.BL.Auth.Auth>();
+builder.Services.AddScoped<EBlog.BL.Auth.ICurrentUser, EBlog.BL.Auth.CurrentUser>();
 builder.Services.AddScoped<EBlog.BL.Auth.IDbSession, EBlog.BL.Auth.DbSession>();
-
-
+builder.Services.AddScoped<EBlog.BL.General.IWebCookie, EBlog.BL.General.WebCookie>();
 
 builder.Services.AddMvc();
 var app = builder.Build();
-using (ApplicationContext db = new ApplicationContext())
-{
-    db.Database.EnsureDeleted();
-    db.Database.EnsureCreated();
-}
+//using (ApplicationContext db = new ApplicationContext())
+//{
+//    db.Database.EnsureDeleted();
+//    db.Database.EnsureCreated();
+//}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

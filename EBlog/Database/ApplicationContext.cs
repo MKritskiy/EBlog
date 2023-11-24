@@ -8,6 +8,8 @@ namespace EBlog.Database
     {
         public DbSet<UserModel> Users { get; set; } = null!;
         public DbSet<SessionModel> Sessions { get; set; } = null!;
+        public DbSet<UserTokenModel> UserTokens { get; set; } = null!;
+
 
         public ApplicationContext()
         {

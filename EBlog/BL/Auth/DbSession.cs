@@ -1,28 +1,23 @@
-﻿using EBlog.DAL;
+﻿using EBlog.BL.General;
+using EBlog.DAL;
 using EBlog.DAL.Models;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace EBlog.BL.Auth
 {
     public class DbSession : IDbSession
     {
         private readonly IDbSessionDAL sessionDAL;
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-        public DbSession(IDbSessionDAL sessionDAL, IHttpContextAccessor httpContextAccessor)
+        private readonly IWebCookie webCookie;
+        public DbSession(IDbSessionDAL sessionDAL, IWebCookie webCookie)
         {
             this.sessionDAL = sessionDAL;
-            this.httpContextAccessor = httpContextAccessor;
+            this.webCookie = webCookie;
         }
 
         private void CreateSessionCookie(Guid sessionId)
         {
-            CookieOptions options = new CookieOptions();
-            options.Path = "/";
-            options.HttpOnly = true;
-            options.Secure = true;
-            httpContextAccessor?.HttpContext?.Response.Cookies.Delete(AuthConstants.SessionCookieName);
-            httpContextAccessor?.HttpContext?.Response.Cookies.Append(AuthConstants.SessionCookieName, sessionId.ToString(), options);
+            webCookie.Delete(AuthConstants.SessionCookieName);
+            webCookie.AddSecure(AuthConstants.SessionCookieName, sessionId.ToString());
         }
 
         private async Task<SessionModel> CreateSession()
@@ -43,9 +38,9 @@ namespace EBlog.BL.Auth
             if (sessionModel!=null)
                 return sessionModel;
             Guid sessionId;
-            var cookie = httpContextAccessor?.HttpContext?.Request?.Cookies.FirstOrDefault(m => m.Key == AuthConstants.SessionCookieName);
-            if (cookie != null && cookie.Value.Value != null)
-                sessionId = Guid.Parse(cookie.Value.Value);
+            var sessionString = webCookie.Get(AuthConstants.SessionCookieName);
+            if (sessionString != null)
+                sessionId = Guid.Parse(sessionString);
             else
                 sessionId = Guid.NewGuid();
 
@@ -85,6 +80,11 @@ namespace EBlog.BL.Auth
         {
             var data = await this.GetSession();
             await sessionDAL.Lock(data.DbSessionId);
+        }
+
+        public void ResetSessionCache()
+        {
+            sessionModel = null;
         }
     }
 }

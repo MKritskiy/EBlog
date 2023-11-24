@@ -1,4 +1,4 @@
-﻿using EBlog.DAL.Models;
+﻿ using EBlog.DAL.Models;
 using EBlog.DAL;
 using System.ComponentModel.DataAnnotations;
 using EBlog.BL.Exeption;
@@ -10,18 +10,20 @@ namespace EBlog.BL.Auth
     {
         private readonly IAuthDAL authDAL;
         private readonly IEncrypt encrypt;
-        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IDbSession dbSession;
+        private readonly IUserTokenDAL userTokenDAL;
+        private readonly IWebCookie webCookie;
 
         public Auth(IAuthDAL authDAL, 
             IEncrypt encrypt, 
-            IHttpContextAccessor httpContextAccessor,
-            IDbSession dbSession) 
+            IWebCookie webCookie,
+            IDbSession dbSession, IUserTokenDAL userTokenDAL) 
         {
             this.authDAL = authDAL;
             this.encrypt = encrypt;
-            this.httpContextAccessor = httpContextAccessor;
             this.dbSession = dbSession;
+            this.webCookie = webCookie;
+            this.userTokenDAL = userTokenDAL;
         }
 
 
@@ -47,6 +49,13 @@ namespace EBlog.BL.Auth
             if (user.UserId!=null && user.Password == encrypt.HashPassword(password, user.Salt))
             {
                 await LoginAsync(user.UserId ?? 0);
+
+                if (rememberMe)
+                {
+                    Guid tokenId = await userTokenDAL.Create(user.UserId ?? 0);
+                    webCookie.AddSecure(AuthConstants.RememberMeCookieName, tokenId.ToString(), 30);
+                }
+
                 return user.UserId ?? 0;
             }
             throw new AuthorizationException();

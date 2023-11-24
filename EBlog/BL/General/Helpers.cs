@@ -11,6 +11,13 @@ namespace EBlog.BL.General
                 return value;
             return def;
         }
+        public static Guid? StringToGuidDef(string str)
+        {
+            Guid value;
+            if (Guid.TryParse(str, out value))
+                return value;
+            return null;
+        }
 
         public static TransactionScope CreateTransactionScope(int seconds = 6000)
         {

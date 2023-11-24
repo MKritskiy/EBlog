@@ -15,6 +15,7 @@ namespace EBlog.DAL.Models
         public int Status { get; set; } = 0;
         public string? Description { get; set; }
 
-		public List<SessionModel> Sessions { get; set; }
+		public List<SessionModel>? Sessions { get; set; }
+		public List<UserTokenModel>? UserTokens { get; set; }
     }
 }

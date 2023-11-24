@@ -1,10 +1,12 @@
 ﻿using EBlog.BL.Auth;
+using EBlog.Middleware;
 using EBlog.ViewMapper;
 using EBlog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EBlog.Controllers
 {
+    [SiteNotAuthorize()]
     public class LoginController : Controller
     {
         private readonly IAuth authBL;
@@ -22,6 +24,7 @@ namespace EBlog.Controllers
 
         [HttpPost]
         [Route("/login")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> IndexSave(LoginViewModel model)
         {
             if (ModelState.IsValid)

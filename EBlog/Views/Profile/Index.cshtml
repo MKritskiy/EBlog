@@ -6,6 +6,7 @@
 
 <div>
     <form action="/profile" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
         <p>
             <div class="error">@Html.ValidationMessage("Form")</div>
         </p>

@@ -1,9 +1,11 @@
-﻿using EBlog.ViewModels;
+﻿using EBlog.Middleware;
+using EBlog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
 namespace EBlog.Controllers
 {
+    [SiteAuthorize()]
     public class ProfileController : Controller
     {
 
@@ -15,6 +17,7 @@ namespace EBlog.Controllers
         }
         [HttpPost]
         [Route("/profile")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> IndexSave()
         {
             //if (ModelState.IsValid)
