@@ -1,4 +1,6 @@
-﻿using EBlog.BL.Exeption;
+﻿using EBlog.BL.Auth;
+using EBlog.BL.Exeption;
+using EBlog.DAL.Models;
 using EblogTest.Helpers;
 using System;
 using System.Collections.Generic;
@@ -47,6 +49,37 @@ namespace EblogTest
 
                 await authBL.Authenticate(email, "qwer1234", false);
 
+
+                string? authCookie = this.webCookie.Get(AuthConstants.SessionCookieName);
+                Assert.NotNull(authCookie);
+
+                string? rememberMeCookie = this.webCookie.Get(AuthConstants.RememberMeCookieName);
+                Assert.Null(rememberMeCookie);
+            }
+
+        }
+        [Test]
+        public async Task RememberMeTest()
+        {
+            using (TransactionScope scope = Helper.CreateTransactionScope())
+            {
+                string email = Guid.NewGuid().ToString() + "@test.com";
+
+                // create user
+                int userId = await authBL.CreateUser(
+                    new UserModel()
+                    {
+                        Email = email,
+                        Password = "qwer1234"
+                    });
+
+                await authBL.Authenticate(email, "qwer1234", true);
+
+                string? authCookie = this.webCookie.Get(AuthConstants.SessionCookieName);
+                Assert.NotNull(authCookie);
+
+                string? rememberMeCookie = this.webCookie.Get(AuthConstants.RememberMeCookieName);
+                Assert.NotNull(rememberMeCookie);
             }
         }
     }

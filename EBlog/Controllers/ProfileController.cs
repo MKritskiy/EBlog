@@ -1,43 +1,67 @@
-﻿using EBlog.Middleware;
+﻿using EBlog.BL.Auth;
+using EBlog.BL.Profile;
+using EBlog.DAL.Models;
+using EBlog.Middleware;
+using EBlog.Service;
+using EBlog.ViewMapper;
 using EBlog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
+using System.Text;
+
 
 namespace EBlog.Controllers
 {
     [SiteAuthorize()]
     public class ProfileController : Controller
     {
+        private readonly ICurrentUser currentUser;
+        private readonly IProfile profile;
 
+        public ProfileController(ICurrentUser currentUser, IProfile profile)
+        {
+            this.currentUser = currentUser;
+            this.profile = profile;
+        }
         [HttpGet]
         [Route("/profile")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new ProfileViewModel());
+            
+
+            var profileModel = await currentUser.GetProfiles();
+
+            var profileViewModel = profileModel!=null ? ProfileMapper.MapProfileModelToProfileViewModel(profileModel) : new ProfileViewModel();
+
+            return View(profileViewModel);
         }
         [HttpPost]
         [Route("/profile")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> IndexSave()
+        public async Task<IActionResult> IndexSave(ProfileViewModel model)
         {
-            //if (ModelState.IsValid)
-            string filename = "";
-            var imageData = Request.Form.Files[0];
-            if (imageData != null)
+            int? curruserid = await currentUser.GetCurrentUserId();
+            if (curruserid == null)
+                throw new Exception("Пользователь не найден");
+           
+            var currprofile = await profile.Get((int)curruserid);
+
+            if (currprofile?.ProfileId != model.ProfileId)
+                throw new Exception("Error");
+
+            if (ModelState.IsValid)
             {
-                MD5 md5hash = MD5.Create();
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(imageData.FileName);
-                byte[] hashBytes = md5hash.ComputeHash(inputBytes);
-
-                string hash = Convert.ToHexString(hashBytes);
-
-                var dir = "./wwwroot/images/" + hash.Substring(0, 2) + "/" +
-                    hash.Substring(0, 4);
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
-                filename = dir + "/" + imageData.FileName;
-                using (var stream = System.IO.File.Create(filename))
-                    await imageData.CopyToAsync(stream);
+                ProfileModel profileModel = ProfileMapper.MapProfileViewModelToProfileModel(model);
+                profileModel.UserId = (int)curruserid;
+                if (Request.Form.Files.Count>0 && Request.Form.Files[0] != null)
+                {
+                    WebFile webFile = new WebFile();
+                    string filename = webFile.GetWebFileName(Request.Form.Files[0].FileName);
+                    await webFile.UploadAndResizeImage(Request.Form.Files[0].OpenReadStream(), filename, 800, 600);
+                    profileModel.ProfileImage = filename;
+                }
+                await profile.AddOrUpdate(profileModel);
+                return Redirect("/");
             }
             return View("Index", new ProfileViewModel());
         }

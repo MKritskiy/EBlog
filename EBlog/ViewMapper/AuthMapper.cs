@@ -3,7 +3,7 @@ using EBlog.ViewModels;
 
 namespace EBlog.ViewMapper
 {
-    public class AuthMapper
+    public static class AuthMapper
     {
         public static UserModel MapRegisterViewModelToUserModel(RegisterViewModel model) 
         {

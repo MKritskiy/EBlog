@@ -54,13 +54,13 @@ namespace EBlog.BL.Auth
             return data;
         }
 
-        public async Task<int> SetUserId(int userId)
+        public async Task SetUserId(int userId)
         {
             var data = await this.GetSession();
             data.UserId = userId;
             data.DbSessionId = Guid.NewGuid();
             CreateSessionCookie(data.DbSessionId);
-            return await sessionDAL.Create(data);
+            await sessionDAL.Create(data);
         }
 
         public async Task<int?> GetUserId()

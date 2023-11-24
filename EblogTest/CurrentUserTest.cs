@@ -18,20 +18,20 @@ namespace EblogTest
             {
                 await CreateAndAuthUser();
 
-                bool isLoggedIn = await this.currentUser.IsLoggedIn();
+                bool isLoggedIn = await this.currentUser.IsLoggedInAsync();
                 Assert.True(isLoggedIn);
 
                 webCookie.Delete(AuthConstants.SessionCookieName);
                 dbSession.ResetSessionCache();
 
-                isLoggedIn = await this.currentUser.IsLoggedIn();
+                isLoggedIn = await this.currentUser.IsLoggedInAsync();
                 Assert.True(isLoggedIn);
 
                 webCookie.Delete(AuthConstants.SessionCookieName);
                 webCookie.Delete(AuthConstants.RememberMeCookieName);
                 dbSession.ResetSessionCache();
 
-                isLoggedIn = await this.currentUser.IsLoggedIn();
+                isLoggedIn = await this.currentUser.IsLoggedInAsync();
                 Assert.False(isLoggedIn);
             }
         }

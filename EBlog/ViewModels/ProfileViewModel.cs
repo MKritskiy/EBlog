@@ -4,11 +4,12 @@ namespace EBlog.ViewModels
 {
     public class ProfileViewModel
     {
+        public int? ProfileId { get; set; }
         [Required]
-        public string? Login { get; set; }
+        public string? ProfileName { get; set; }
         [Required]
-        public string? ProfileImage { get; set; }
-        public int Status { get; set; } = 0;
-        public string? Description { get; set; } = null;
+        public string? FirstName { get; set; }
+        [Required]
+        public string? LastName { get; set; }
     }
 }

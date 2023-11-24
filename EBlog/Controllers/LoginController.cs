@@ -34,7 +34,7 @@ namespace EBlog.Controllers
                     int id = await authBL.Authenticate(model.Email!, model.Password!, model.RememberMe == true);
                     return Redirect("/");
                 }
-                catch (BL.Exeption.AuthorizationException e)
+                catch (BL.Exeption.AuthorizationException)
                 {
                     ModelState.AddModelError("Form", "Неверные почта или пароль");
                 }

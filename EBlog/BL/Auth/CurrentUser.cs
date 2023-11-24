@@ -1,5 +1,7 @@
 ﻿using EBlog.BL.General;
+using EBlog.BL.Profile;
 using EBlog.DAL;
+using EBlog.DAL.Models;
 
 namespace EBlog.BL.Auth
 {
@@ -8,13 +10,14 @@ namespace EBlog.BL.Auth
         private readonly IDbSession dbSession;
         private readonly IWebCookie webCookie;
         private readonly IUserTokenDAL userTokenDAL;
+        private readonly IProfileDAL profileDAL;
 
-
-        public CurrentUser(IDbSession dbSession, IWebCookie webCookie, IUserTokenDAL userTokenDAL)
+        public CurrentUser(IDbSession dbSession, IWebCookie webCookie, IUserTokenDAL userTokenDAL, IProfileDAL profileDAL)
         {
             this.dbSession = dbSession;
             this.webCookie = webCookie;
             this.userTokenDAL = userTokenDAL;
+            this.profileDAL = profileDAL;
         }
 
         public async Task<int?> GetUserIdByToken()
@@ -46,5 +49,19 @@ namespace EBlog.BL.Auth
             }
             return isLoggedIn;
         } 
+
+        public async Task<int?> GetCurrentUserId()
+        {
+            return await dbSession.GetUserId();
+        }
+
+        public async Task<ProfileModel?> GetProfiles()
+        {
+            int? userid = await GetCurrentUserId();
+            if (userid == null)
+                throw new Exception("Пользователь не найден");
+
+            return await profileDAL.Get((int)userid);
+        }
     }
 }

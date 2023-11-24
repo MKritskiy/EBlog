@@ -11,12 +11,12 @@ namespace EblogTest.Helpers
     {
         Dictionary<string, string> cookies = new Dictionary<string, string>();
 
-        public void Add(string cookieName, string cookieValue)
+        public void Add(string cookieName, string cookieValue, int days = 0)
         {
             cookies.Add(cookieName, cookieValue);
         }
 
-        public void AddSecure(string cookieName, string cookieValue)
+        public void AddSecure(string cookieName, string cookieValue, int days = 0)
         {
             cookies.Add(cookieName, cookieValue);
         }
@@ -31,6 +31,11 @@ namespace EblogTest.Helpers
             if (cookies.ContainsKey(cookieName)) 
                 return cookies[cookieName];
             return null;
+        }
+
+        public void Clear()
+        {
+            cookies.Clear();
         }
     }
 }

@@ -9,6 +9,5 @@ namespace EBlog.DAL.Models
         public DateTime Created { get; set; }
 
         public int? UserId { get; set; }
-        public UserModel? User { get; set; }
     }
 }

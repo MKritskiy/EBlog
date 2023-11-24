@@ -6,18 +6,29 @@
 
 <div>
     <form action="/profile" method="post" enctype="multipart/form-data">
+        <input name="ProfileId" type="hidden" value=@Model.ProfileId />
         @Html.AntiForgeryToken()
         <p>
             <div class="error">@Html.ValidationMessage("Form")</div>
         </p>
         <p>
             <label>Имя профиля</label>
-            <input name="Login" type="text" value="@Model.Login" />
-            <div class="error">@Html.ValidationMessageFor(m => m.Login)</div>
+            <input name="ProfileName" type="text" value="@Model.ProfileName" />
+            <div class="error">@Html.ValidationMessageFor(m => m.ProfileName)</div>
+        </p>
+        <p>
+            <label>Имя</label>
+            <input name="FirstName" type="text" value="@Model.FirstName" />
+            <div class="error">@Html.ValidationMessageFor(m => m.FirstName)</div>
+        </p>
+        <p>
+            <label>Фамилия</label>
+            <input name="LastName" type="text" value="@Model.LastName" />
+            <div class="error">@Html.ValidationMessageFor(m => m.LastName)</div>
         </p>
         <p>
             <input type="file" name="ProfileImage"/>
         </p>
-        <button>Авторизоваться</button>
+        <button>Сохранить</button>
     </form>
 </div>
