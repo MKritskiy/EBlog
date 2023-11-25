@@ -21,12 +21,12 @@ builder.Services.AddScoped<EBlog.BL.General.IWebCookie, EBlog.BL.General.WebCook
 
 builder.Services.AddMvc();
 var app = builder.Build();
-using (ApplicationContext db = new ApplicationContext())
-{
-    db.Database.EnsureDeleted();
-    db.Database.EnsureCreated();
-}
-// Configure the HTTP request pipeline.
+//using (ApplicationContext db = new ApplicationContext())
+//{
+//db.Database.EnsureDeleted();
+//db.Database.EnsureCreated();
+//}
+//Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

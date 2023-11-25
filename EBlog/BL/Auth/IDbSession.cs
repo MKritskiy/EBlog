@@ -10,5 +10,6 @@ namespace EBlog.BL.Auth
         Task<bool> IsLoggedIn();
         Task Lock();
         void ResetSessionCache();
+
     }
 }

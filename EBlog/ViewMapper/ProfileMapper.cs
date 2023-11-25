@@ -13,6 +13,7 @@ namespace EBlog.ViewMapper
                 ProfileName = model.ProfileName,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                ProfileImage = model.ProfileImage,
             };
         }
         public static ProfileViewModel MapProfileModelToProfileViewModel(ProfileModel model)
@@ -23,6 +24,7 @@ namespace EBlog.ViewMapper
                 ProfileName = model.ProfileName,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                ProfileImage = model.ProfileImage,
             };
         }
     }

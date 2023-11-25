@@ -1,6 +1,7 @@
 ﻿using EBlog.BL.General;
 using EBlog.DAL;
 using EBlog.DAL.Models;
+using System.Text.Json;
 
 namespace EBlog.BL.Auth
 {
@@ -8,6 +9,9 @@ namespace EBlog.BL.Auth
     {
         private readonly IDbSessionDAL sessionDAL;
         private readonly IWebCookie webCookie;
+
+        private Dictionary<string, object> SessionContent = new Dictionary<string, object>();
+        private SessionModel? sessionModel = null;
         public DbSession(IDbSessionDAL sessionDAL, IWebCookie webCookie)
         {
             this.sessionDAL = sessionDAL;
@@ -18,6 +22,32 @@ namespace EBlog.BL.Auth
         {
             webCookie.Delete(AuthConstants.SessionCookieName);
             webCookie.AddSecure(AuthConstants.SessionCookieName, sessionId.ToString());
+        }
+
+        public async Task UpdateSessionData()
+        {
+            if (this.sessionModel != null)
+                await this.sessionDAL.Update(this.sessionModel.DbSessionId, JsonSerializer.Serialize(SessionContent));
+            else
+                throw new Exception("Сессия не загружена");
+        }
+        public void AddValue(string key, object value)
+        {
+            if (SessionContent.ContainsKey(key))
+                SessionContent[key] = value;
+            else
+                SessionContent.Add(key, value);
+        }
+        public void RemoveValue(string key)
+        {
+            if (SessionContent.ContainsKey(key))
+                SessionContent.Remove(key);
+        }
+        public object GetValueDef(string key, object defaultValue)
+        {
+            if (SessionContent.ContainsKey(key))
+                return SessionContent[key];
+            return defaultValue;
         }
 
         private async Task<SessionModel> CreateSession()
@@ -32,7 +62,6 @@ namespace EBlog.BL.Auth
             return data;
         }
 
-        private SessionModel? sessionModel = null;
         public async Task<SessionModel> GetSession()
         {
             if (sessionModel!=null)
@@ -51,6 +80,9 @@ namespace EBlog.BL.Auth
                 CreateSessionCookie(data.DbSessionId);
             }
             sessionModel = data;
+            if (data.SessionContent != null)
+                SessionContent = JsonSerializer.Deserialize<Dictionary<string, object>>(data.SessionContent) ?? new Dictionary<string, object>();
+            await this.sessionDAL.Extend(data.DbSessionId);
             return data;
         }
 
@@ -60,6 +92,7 @@ namespace EBlog.BL.Auth
             data.UserId = userId;
             data.DbSessionId = Guid.NewGuid();
             CreateSessionCookie(data.DbSessionId);
+            data.SessionContent = JsonSerializer.Serialize(SessionContent);
             await sessionDAL.Create(data);
         }
 

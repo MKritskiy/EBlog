@@ -55,7 +55,7 @@ namespace EBlog.BL.Auth
             return await dbSession.GetUserId();
         }
 
-        public async Task<ProfileModel?> GetProfiles()
+        public async Task<ProfileModel?> GetProfile()
         {
             int? userid = await GetCurrentUserId();
             if (userid == null)

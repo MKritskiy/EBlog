@@ -43,14 +43,23 @@ namespace EBlog.DAL
                 await db.Database.ExecuteSqlRawAsync(sql, new NpgsqlParameter("sessionId", sessionId));
             }
         }
-        public async Task<int> Update(SessionModel model)
-        {
+        public async Task Update(Guid dbSessionId, string sessionContent)
+        { 
             using (ApplicationContext db = new ApplicationContext())
             {
-                db.Sessions.Update(model);
+                var session =  await db.Sessions.FirstOrDefaultAsync(s => s.DbSessionId == dbSessionId);
+                if (session != null)
+                    session.SessionContent = sessionContent;
                 await db.SaveChangesAsync();
-                return SUCCESSFUL_OPERATION;
             }
+        }
+
+        public async Task Extend(Guid dbSessionId)
+        {
+            var session = await db.Sessions.FirstOrDefaultAsync(s => s.DbSessionId == dbSessionId);
+            if (session!=null)
+                session.LastAccessed = DateTime.UtcNow;
+            await db.SaveChangesAsync();
         }
     }
 }

@@ -5,8 +5,9 @@ namespace EBlog.DAL
     public interface IDbSessionDAL
     {
         Task<SessionModel?> Get(Guid sessionId);
-        Task<int> Update(SessionModel model);
+        Task Update(Guid dbSessionId, string sessionContent);
         Task<int> Create(SessionModel model);
         Task Lock(Guid sessionId);
+        Task Extend(Guid dbSessionId);
     }
 }

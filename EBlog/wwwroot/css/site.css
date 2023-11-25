@@ -24,3 +24,7 @@ body {
 .error, .validation-summary-errors {
     color: red
 }
+
+.profileimage{
+    width:100%;
+}

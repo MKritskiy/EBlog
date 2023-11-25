@@ -5,11 +5,14 @@ namespace EBlog.Service
 {
     public class WebFile
     {
+
+        const string FOLDER_PREFIX = "./wwwroot";
+
         public string GetWebFileName(string filename)
         {
             string dir = GetWebFileFolder(filename);
             
-            CreateFolder(dir);
+            CreateFolder(FOLDER_PREFIX + dir);
 
             return dir + "/" + Path.GetFileNameWithoutExtension(filename) + ".jpeg";
 
@@ -24,7 +27,7 @@ namespace EBlog.Service
 
             string hash = Convert.ToHexString(hashBytes);
 
-            return "./wwwroot/images/" + hash.Substring(0, 2) + "/" +
+            return "/images/" + hash.Substring(0, 2) + "/" +
                 hash.Substring(0, 4);
         }
 
@@ -47,7 +50,7 @@ namespace EBlog.Service
 
                 int height = image.Height / 2;
                 image.Mutate(x => x.Resize(aspectWidth, aspectHeight, KnownResamplers.Lanczos3));
-                await image.SaveAsJpegAsync(filename, new JpegEncoder() { Quality = 75 });
+                await image.SaveAsJpegAsync(FOLDER_PREFIX + filename, new JpegEncoder() { Quality = 75 });
             }
         }
     }
