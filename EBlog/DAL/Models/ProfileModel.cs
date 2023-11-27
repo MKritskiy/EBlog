@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EBlog.DAL.Models
 {
@@ -12,7 +13,9 @@ namespace EBlog.DAL.Models
         public string? ProfileImage { get; set; } = null;
         public string? Description { get; set; }
         public int Status { get; set; } = 0;
-
         public int UserId { get; set; }
+
+        [InverseProperty(nameof(CommentModel.Profile))]
+        public List<CommentModel> Comments { get; set; } = new();
     }
 }

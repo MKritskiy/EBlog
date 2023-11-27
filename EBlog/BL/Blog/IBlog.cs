@@ -4,7 +4,7 @@ namespace EBlog.BL.Blog
 {
     public interface IBlog
     {
-        public Task<BlogModel> Get(int blogId);
+        public Task<BlogModel?> Get(int blogId);
         public Task<IEnumerable<BlogModel>> GetByUserId(int userId);
         public Task<IEnumerable<BlogModel>> Search(int count);
         public Task<int?> Add(BlogModel model);

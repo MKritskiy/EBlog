@@ -3,6 +3,7 @@ using EBlog.DAL;
 using System.ComponentModel.DataAnnotations;
 using EBlog.BL.Exeption;
 using EBlog.BL.General;
+using EBlog.BL.Profile;
 
 namespace EBlog.BL.Auth
 {
@@ -13,17 +14,19 @@ namespace EBlog.BL.Auth
         private readonly IDbSession dbSession;
         private readonly IUserTokenDAL userTokenDAL;
         private readonly IWebCookie webCookie;
+        private readonly IProfile profile;
 
         public Auth(IAuthDAL authDAL, 
             IEncrypt encrypt, 
             IWebCookie webCookie,
-            IDbSession dbSession, IUserTokenDAL userTokenDAL) 
+            IDbSession dbSession, IUserTokenDAL userTokenDAL, IProfile profile) 
         {
             this.authDAL = authDAL;
             this.encrypt = encrypt;
             this.dbSession = dbSession;
             this.webCookie = webCookie;
             this.userTokenDAL = userTokenDAL;
+            this.profile = profile;
         }
 
 
@@ -33,6 +36,10 @@ namespace EBlog.BL.Auth
             user.Password = encrypt.HashPassword(user.Password, user.Salt);
             int id = await authDAL.CreateUser(user);
             await LoginAsync(id);
+
+            ProfileModel newProfile = new ProfileModel() {UserId=user.UserId ?? 0, ProfileName="Profile"+ (user.UserId ?? 0), ProfileImage="/images/default/Мегумин.jpeg"  };
+            await profile.AddOrUpdate(newProfile);
+
             return id;
         }
 

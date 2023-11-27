@@ -26,7 +26,7 @@ namespace EBlog.BL.Profile
         public async Task AddOrUpdate(ProfileModel profile)
         {
             if (profile.ProfileId == null)
-                await profileDAL.Add(profile);
+                await Add(profile);
             else
                 await profileDAL.Update(profile);
         }

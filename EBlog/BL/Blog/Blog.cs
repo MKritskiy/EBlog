@@ -20,7 +20,7 @@ namespace EBlog.BL.Blog
             return await blogDAL.Add(model);
         }
 
-        public async Task<BlogModel> Get(int blogId)
+        public async Task<BlogModel?> Get(int blogId)
         {
             return await blogDAL.Get(blogId);
         }

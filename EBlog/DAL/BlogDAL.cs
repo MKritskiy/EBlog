@@ -22,9 +22,9 @@ namespace EBlog.DAL
             return model.BlogId;
         }
 
-        public async Task<BlogModel> Get(int blogId)
+        public async Task<BlogModel?> Get(int blogId)
         {
-            return await db.Blogs.FindAsync(blogId) ?? new BlogModel();
+            return await db.Blogs.FirstOrDefaultAsync(b=>b.BlogId==blogId);
         }
 
         public async Task<IEnumerable<BlogModel>> GetByUserId(int userId)

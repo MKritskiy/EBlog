@@ -1,3 +1,4 @@
+using EBlog.DAL.Models;
 using EBlog.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddSingleton<EBlog.DAL.IAuthDAL, EBlog.DAL.AuthDAL>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<EBlog.DAL.IDbSessionDAL, EBlog.DAL.DbSessionDAL>();
 builder.Services.AddSingleton<EBlog.DAL.IUserTokenDAL, EBlog.DAL.UserTokenDAL>();
+
+builder.Services.AddScoped<EBlog.DAL.ICommentDAL, EBlog.DAL.CommentDAL>();
+builder.Services.AddScoped<EBlog.BL.Blog.IComment, EBlog.BL.Blog.Comment>();
 
 builder.Services.AddScoped<EBlog.DAL.IBlogDAL, EBlog.DAL.BlogDAL>();
 builder.Services.AddScoped<EBlog.BL.Blog.IBlog, EBlog.BL.Blog.Blog>();
@@ -27,6 +31,7 @@ var app = builder.Build();
 //{
 //    db.Database.EnsureDeleted();
 //    db.Database.EnsureCreated();
+
 //}
 //Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

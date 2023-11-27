@@ -11,6 +11,8 @@ namespace EBlog.Database
         public DbSet<UserTokenModel> UserTokens { get; set; } = null!;
         public DbSet<ProfileModel> Profiles { get; set; } = null!;
         public DbSet<BlogModel> Blogs { get; set; } = null!;
+        public DbSet<CommentModel> Comments { get; set; } = null!;
+
 
         public ApplicationContext()
         {

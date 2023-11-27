@@ -29,7 +29,7 @@ namespace EBlog.DAL
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                return await db.Profiles.FirstOrDefaultAsync(p=>p.UserId==userId);
+                return await db.Profiles.Include(p=>p.Comments).FirstOrDefaultAsync(p=>p.UserId==userId);
             }
         }
 
