@@ -12,9 +12,10 @@ namespace EBlog.BL.Profile
             this.profileDAL = profileDAL;
         }
 
-        public Task<int> Add(ProfileModel profile)
+        public async Task<int> Add(ProfileModel profile)
         {
-            throw new NotImplementedException();
+            var profileid = await profileDAL.Add(profile);
+            return  profileid ?? 0;
         }
 
         public async Task<ProfileModel?> Get(int userId)

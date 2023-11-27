@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EBlog.DAL.Models
+namespace EBlog.ViewModels
 {
-    public class BlogModel
+    public class BlogViewModel
     {
-        [Key]
         public int? BlogId { get; set; }
+        [Required]
         public string? BlogHeader { get; set; }
+        [Required]
         public string? BlogContent { get; set; }
-        public int UserId { get; set; }
     }
 }

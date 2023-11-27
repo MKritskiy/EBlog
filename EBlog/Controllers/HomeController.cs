@@ -1,4 +1,5 @@
 ﻿using EBlog.BL.Auth;
+using EBlog.BL.Blog;
 using EBlog.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,16 +10,19 @@ namespace EBlog.Controllers
     {
         private readonly ILogger<HomeController> logger;
         private readonly ICurrentUser currentUser;
+        private readonly IBlog blog;
 
-        public HomeController(ILogger<HomeController> logger, ICurrentUser currentUser)
+        public HomeController(ILogger<HomeController> logger, ICurrentUser currentUser, IBlog blog)
         {
             this.logger = logger;
             this.currentUser = currentUser;
+            this.blog = blog;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var bloglist = await blog.Search(4);
+            return View(bloglist);
         }
 
         public IActionResult Privacy()

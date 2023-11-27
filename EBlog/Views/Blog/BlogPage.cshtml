@@ -1,0 +1,9 @@
+﻿@model EBlog.DAL.Models.BlogModel
+@{
+    ViewData["Title"] = "Blog page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.BlogHeader</h1>
+    <div class="row">@Model.BlogContent</div>
+</div>

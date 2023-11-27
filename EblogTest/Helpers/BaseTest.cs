@@ -3,7 +3,6 @@ using EBlog.BL.Auth;
 using EBlog.BL.General;
 using EBlog.BL.Profile;
 using EBlog.DAL;
-using Microsoft.AspNetCore.Http;
 
 namespace EblogTest.Helpers
 {

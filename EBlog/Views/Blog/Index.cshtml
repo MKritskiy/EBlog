@@ -1,0 +1,28 @@
+﻿@model BlogViewModel
+
+@{
+    ViewData["Title"] = "Создание записи";
+}
+
+<div class="row">
+    <div class="col-sm-8">
+        <form action="/blogedit" method="post">
+            <input name="BlogId" type="hidden" value=@Model.BlogId />
+            @Html.AntiForgeryToken()
+            <p>
+                <div class="error">@Html.ValidationMessage("Form")</div>
+            </p>
+            <p>
+                <label>Заголовок</label>
+                <input name="BlogHeader" type="text" value="@Model.BlogHeader" class="form-control" />
+                <div class="error form-text text-muted">@Html.ValidationMessageFor(m => m.BlogHeader)</div>
+            </p>
+            <p>
+                <label>Содержимое</label>
+                <input name="BlogContent" type="text" value="@Model.BlogContent" class="form-control" />
+                <div class="error form-text text-muted">@Html.ValidationMessageFor(m => m.BlogContent)</div>
+            </p>
+            <button class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+</div>
