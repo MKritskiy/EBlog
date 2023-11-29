@@ -7,9 +7,7 @@ namespace EBlog.ViewModels
         public int? ProfileId { get; set; }
         [Required]
         public string? ProfileName { get; set; }
-        [Required]
         public string? FirstName { get; set; }
-        [Required]
         public string? LastName { get; set; }
         public string? ProfileImage { get; set; }
 

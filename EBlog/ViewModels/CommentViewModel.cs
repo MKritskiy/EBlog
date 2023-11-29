@@ -7,5 +7,7 @@
         public string? CommentHeader { get; set; }
         public string? CommentContent { get; set; }
         public string? ProfileImage { get; set; }
+        public int? AuthorId { get; set; } = 0;
+
     }
 }

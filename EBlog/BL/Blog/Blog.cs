@@ -25,9 +25,9 @@ namespace EBlog.BL.Blog
             return await blogDAL.Get(blogId);
         }
 
-        public async Task<IEnumerable<BlogModel>> GetByUserId(int userId)
+        public async Task<IEnumerable<BlogModel>> GetByProfileId(int profileId)
         {
-            return await blogDAL.GetByUserId(userId);
+            return await blogDAL.GetByProfileId(profileId);
         }
 
         public async Task<IEnumerable<BlogModel>> Search(int count)
@@ -47,6 +47,9 @@ namespace EBlog.BL.Blog
             else
                 await Update(model);
         }
-
+        public async Task Remove(BlogModel model)
+        {
+            await blogDAL.Remove(model);
+        }
     }
 }

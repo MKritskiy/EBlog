@@ -9,5 +9,6 @@ namespace EBlog.DAL
         Task<int> Create(SessionModel model);
         Task Lock(Guid sessionId);
         Task Extend(Guid dbSessionId);
+        Task Remove(Guid dbSessionId);
     }
 }

@@ -21,14 +21,14 @@ namespace EblogTest
                     { 
                         BlogContent = "Содержимое",
                         BlogHeader = "Заголовок",
-                        UserId = 19,
+                        ProfileId = 19,
                     });
-                var result = await blog.GetByUserId(19);
+                var result = await blog.GetByProfileId(19);
                 Assert.That(result?.FirstOrDefault(), Is.Not.Null);
 
                 Assert.That(result?.FirstOrDefault()?.BlogContent, Is.EqualTo("Содержимое"));
                 Assert.That(result?.FirstOrDefault()?.BlogHeader, Is.EqualTo("Заголовок"));
-                Assert.That(result?.FirstOrDefault()?.UserId, Is.EqualTo(19));
+                Assert.That(result?.FirstOrDefault()?.ProfileId, Is.EqualTo(19));
 
             }
         }
@@ -42,7 +42,7 @@ namespace EblogTest
                 {
                     BlogContent = "Содержимое",
                     BlogHeader = "Заголовок",
-                    UserId = 19,
+                    ProfileId = 19,
 
                 };
 
@@ -54,11 +54,11 @@ namespace EblogTest
 
 
 
-                var result = await blog.GetByUserId(19);
+                var result = await blog.GetByProfileId(19);
                 Assert.That(result?.FirstOrDefault(), Is.Not.Null);
 
                 Assert.That(result?.FirstOrDefault()?.BlogHeader, Is.EqualTo("Заголовок1"));
-                Assert.That(result?.FirstOrDefault()?.UserId, Is.EqualTo(19));
+                Assert.That(result?.FirstOrDefault()?.ProfileId, Is.EqualTo(19));
 
             }
         }

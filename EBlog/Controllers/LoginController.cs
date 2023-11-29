@@ -1,7 +1,9 @@
 ﻿using EBlog.BL.Auth;
+using EBlog.BL.General;
 using EBlog.Middleware;
 using EBlog.ViewMapper;
 using EBlog.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EBlog.Controllers
@@ -14,6 +16,7 @@ namespace EBlog.Controllers
         public LoginController(IAuth authBL)
         {
             this.authBL = authBL;
+
         }
         [HttpGet]
         [Route("/login")]
@@ -42,5 +45,7 @@ namespace EBlog.Controllers
             }
             return View("Index", model);
         }
+
+
     }
 }

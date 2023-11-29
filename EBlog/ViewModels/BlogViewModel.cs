@@ -9,5 +9,8 @@ namespace EBlog.ViewModels
         public string? BlogHeader { get; set; }
         [Required]
         public string? BlogContent { get; set; }
+        public string? ProfileImage { get; set; }
+        public string? AuthorName { get; set; }
+        public int? AuthorId { get; set; } = 0;
     }
 }

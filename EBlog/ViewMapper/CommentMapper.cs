@@ -23,6 +23,7 @@ namespace EComment.ViewMapper
                 ProfileImage = model.Profile?.ProfileImage ?? "\\images\\default\\Мегумин.jpeg",
                 CommentHeader = model.CommentHeader,
                 CommentContent = model.CommentContent,
+                AuthorId = model.Profile?.ProfileId,
             };
         }
     }

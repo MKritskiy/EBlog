@@ -61,5 +61,11 @@ namespace EBlog.DAL
                 session.LastAccessed = DateTime.UtcNow;
             await db.SaveChangesAsync();
         }
+
+        public async Task Remove(Guid dbSessionId)
+        {
+            await db.Sessions.Where(s=>s.DbSessionId==dbSessionId).ExecuteDeleteAsync() ;
+            await db.SaveChangesAsync();
+        }
     }
 }

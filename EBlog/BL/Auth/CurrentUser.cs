@@ -63,5 +63,14 @@ namespace EBlog.BL.Auth
 
             return await profileDAL.Get((int)userid);
         }
+        public void Logout()
+        {
+            dbSession.RemoveSessionId();
+            webCookie.Delete(AuthConstants.SessionCookieName);
+            webCookie.Delete(AuthConstants.RememberMeCookieName);
+
+            dbSession.ResetSessionCache();
+        }
+
     }
 }

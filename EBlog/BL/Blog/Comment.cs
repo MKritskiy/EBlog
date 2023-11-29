@@ -42,5 +42,10 @@ namespace EBlog.BL.Blog
         {
             await commentDAL.Update(model);
         }
+
+        public async Task Remove(CommentModel model)
+        {
+            await commentDAL.Remove(model);
+        }
     }
 }

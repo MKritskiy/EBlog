@@ -3,15 +3,23 @@
     ViewData["Title"] = "All blogs List";
 }
 
-<div class="text-center">
-    <h1 class="display-4">All blogs List</h1>
-    <div class="row">
-        @foreach (var blog in Model)
-        {
-            <div class="col-sm-4 col-md-3">
-                <a href="/blog/@blog.BlogId"><h2>@blog.BlogHeader</h2></a>
-                <div>@blog.BlogContent</div>
-            </div>
-        }
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4 mb-4">Все записи</h1>
+        <div class="row">
+            @foreach (var blog in Model)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <a href="/blog/@blog.BlogId" class="text-decoration-none">
+                                <h2 class="card-title h4">@blog.BlogHeader</h2>
+                            </a>
+                            <p class="card-text">@blog.BlogContent</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>

@@ -44,5 +44,13 @@ namespace EBlog.DAL
                 await db.SaveChangesAsync();
             }
         }
+        public async Task Remove(CommentModel model)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                db.Comments.Remove(model);
+                await db.SaveChangesAsync();
+            }
+        }
     }
 }

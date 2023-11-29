@@ -48,8 +48,6 @@ namespace EBlog.BL.Auth
             await dbSession.SetUserId(id);
         }
 
-
-
         public async Task<int> Authenticate(string email, string password, bool rememberMe)
         {
             var user = await authDAL.GetUser(email);

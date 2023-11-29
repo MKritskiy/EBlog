@@ -4,45 +4,57 @@
     ViewData["Title"] = "Профиль";
 }
 
-<div class="row">
-    <div class="col-sm-8">
-        <form action="/profile" method="post">
-            <input name="ProfileId" type="hidden" value=@Model.ProfileId />
-            @Html.AntiForgeryToken()
-            <p>
-                <div class="error">@Html.ValidationMessage("Form")</div>
-            </p>
-            <p>
-                <label>Имя профиля</label>
-                <input name="ProfileName" type="text" value="@Model.ProfileName" class="form-control"/>
-                <div class="error form-text text-muted">@Html.ValidationMessageFor(m => m.ProfileName)</div>
-            </p>
-            <p>
-                <label>Имя</label>
-                <input name="FirstName" type="text" value="@Model.FirstName" class="form-control" />
-                <div class="error form-text text-muted">@Html.ValidationMessageFor(m => m.FirstName)</div>
-            </p>
-            <p>
-                <label>Фамилия</label>
-                <input name="LastName" type="text" value="@Model.LastName" class="form-control" />
-                <div class="error form-text text-muted">@Html.ValidationMessageFor(m => m.LastName)</div>
-            </p>
-            <button class="btn btn-primary">Сохранить</button>
-        </form>
-    </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">@ViewData["Title"]</h2>
+                    <form action="/profile" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="ProfileId" value="@Model.ProfileId" />
+                        <div class="mb-3">
+                            <div class="error">@Html.ValidationMessage("Form")</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputProfileName" class="form-label">Имя профиля</label>
+                            <input name="ProfileName" type="text" class="form-control" id="inputProfileName" value="@Model.ProfileName" required>
+                            <div class="invalid-feedback d-block">@Html.ValidationMessageFor(m => m.ProfileName)</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputFirstName" class="form-label">Имя</label>
+                            <input name="FirstName" type="text" class="form-control" id="inputFirstName" value="@Model.FirstName" required>
+                            <div class="invalid-feedback d-block">@Html.ValidationMessageFor(m => m.FirstName)</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputLastName" class="form-label">Фамилия</label>
+                            <input name="LastName" type="text" class="form-control" id="inputLastName" value="@Model.LastName" required>
+                            <div class="invalid-feedback d-block">@Html.ValidationMessageFor(m => m.LastName)</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-    <div class="col-sm-4">
-        <form action="/profile/uploadimage" method="post" enctype="multipart/form-data">
-            <input name="ProfileId" type="hidden" value=@Model.ProfileId />
-            @Html.AntiForgeryToken()
-            @if (!String.IsNullOrEmpty(Model.ProfileImage))
-            {
-                <img src="@Model.ProfileImage" class="profileimage" >
-            }
-            <p>
-                <input type="file" name="ProfileImage">
-            </p>
-            <button class="btn btn-primary">Сохранить</button>
-        </form>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Загрузить изображение</h5>
+                    <form action="/profile/uploadimage" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="ProfileId" value="@Model.ProfileId" />
+                        @if (!String.IsNullOrEmpty(Model.ProfileImage))
+                        {
+                            <img src="@Model.ProfileImage" class="profileimage img-fluid rounded mb-3" alt="Profile Image">
+                        }
+                        <div class="mb-3">
+                            <input type="file" name="ProfileImage" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

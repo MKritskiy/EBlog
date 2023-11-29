@@ -17,5 +17,8 @@ namespace EBlog.DAL.Models
 
         [InverseProperty(nameof(CommentModel.Profile))]
         public List<CommentModel> Comments { get; set; } = new();
+
+        [InverseProperty(nameof(BlogModel.Profile))]
+        public List<BlogModel> Blogs { get; set; } = new();
     }
 }

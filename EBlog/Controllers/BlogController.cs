@@ -1,6 +1,7 @@
 ﻿using EBlog.BL.Auth;
 using EBlog.BL.Blog;
 using EBlog.BL.Profile;
+using EBlog.DAL.Models;
 using EBlog.Middleware;
 using EBlog.ViewMapper;
 using EBlog.ViewModels;
@@ -31,17 +32,47 @@ namespace EBlog.Controllers
             return View(new BlogViewModel());
         }
 
+
+        [HasAuthority()]
+        [HttpGet]
+        [Route("/blogedit/{blogid}")]
+        public async Task<IActionResult> Index(int blogid)
+        {
+            var currprofile = await currentUser.GetProfile();
+            var currblog = await blog.Get(blogid);
+            if (currprofile?.ProfileId==currblog?.ProfileId)
+                return View(BlogMapper.MapBlogModelToBlogViewModel(currblog));
+            throw new Exception("Вы не имеете права на это");
+        }
+
+
+        [HasAuthority()]
+        [HttpPost]
+        [Route("/blogedit/{blogid}")]
+        public async Task<IActionResult> IndexDelete(int blogid)
+        {
+            var currprofile = await currentUser.GetProfile();
+            var currblog = await blog.Get(blogid);
+            if (currblog!=null && currprofile?.ProfileId == currblog?.ProfileId)
+            {
+                await blog.Remove(currblog ?? new BlogModel());
+                return Redirect("/");
+            }
+            throw new Exception("Вы не имеете права на это");
+        }
+
+
         [HttpPost]
         [Route("/blogedit")]
         public async Task<IActionResult> IndexSave(BlogViewModel model)
         {
-            int? curruserid = await currentUser.GetCurrentUserId();
-            if (curruserid == null)
-                throw new Exception("Пользователь не найден");
+            var currprofile = await currentUser.GetProfile();
+            if (currprofile == null)
+                throw new Exception("Профиль не найден");
             if (ModelState.IsValid)
             {
                 var blogModel = BlogMapper.MapBlogViewModelToBlogModel(model);
-                blogModel.UserId = (int)curruserid;
+                blogModel.ProfileId = currprofile.ProfileId ?? 0;
                 await blog.AddOrUpdate(blogModel);
                 return Redirect("/");
             }
@@ -55,6 +86,7 @@ namespace EBlog.Controllers
 
             var currblog = await blog.Get(blogid);
             var currcoments = await comment.GetByBlogId(blogid);
+            var currProfile = await currentUser.GetProfile();
             IEnumerable<CommentViewModel>? currCommentViewModel;
             if (currcoments.Count() > 0)
             {
@@ -63,13 +95,19 @@ namespace EBlog.Controllers
             {
                 currCommentViewModel = null;
             }
+            if (currblog == null)
+                throw new Exception("Не удалось найти запись с таким номером");
+            
             BlogPageViewModel model = new BlogPageViewModel()
                 {
                     BlogViewModel = BlogMapper.MapBlogModelToBlogViewModel(currblog),
                     CommentViewModel = currCommentViewModel,
+                    CurrProfileId = currProfile?.ProfileId ?? null,
                 };
             return View(model);
         }
+
+
         [HttpGet]
         [Route("/blogs")]
         public async Task<IActionResult> Blogs(int blogid)
@@ -79,5 +117,9 @@ namespace EBlog.Controllers
 
             return View(currblog);
         }
+
+
+
     }
+
 }

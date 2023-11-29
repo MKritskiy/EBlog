@@ -41,5 +41,34 @@ namespace EBlog.Controllers
             }
             return Redirect("/blog/"+blogid);
         }
+        [HttpPost]
+        [Route("/blog/{blogId}/editcomment/{commentId}")]
+        public async Task<IActionResult> EditComment(int blogId, int commentId, string editedContent)
+        {
+            var currcomment = await comment.Get(commentId);
+            if (currcomment == null || currcomment.ProfileId != (await currentUser.GetProfile())?.ProfileId)
+            {
+                return BadRequest(); // Вернуть ошибку или другой статус, если комментарий не найден или пользователь не имеет права редактировать его
+            }
+
+            currcomment.CommentContent = editedContent;
+            await comment.Update(currcomment);
+
+            return Redirect("/blog/"+blogId);
+        }
+        [HttpPost]
+        [Route("/blog/{blogId}/deletecomment/{commentId}")]
+        public async Task<IActionResult> RemoveComment(int blogId, int commentId)
+        {
+            var currcomment = await comment.Get(commentId);
+            if (currcomment == null || currcomment.ProfileId != (await currentUser.GetProfile())?.ProfileId)
+            {
+                return BadRequest(); // Вернуть ошибку или другой статус, если комментарий не найден или пользователь не имеет права редактировать его
+            }
+ 
+            await comment.Remove(currcomment);
+
+            return Redirect("/blog/" + blogId);
+        }
     }
 }

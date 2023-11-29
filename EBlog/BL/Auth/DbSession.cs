@@ -10,8 +10,9 @@ namespace EBlog.BL.Auth
         private readonly IDbSessionDAL sessionDAL;
         private readonly IWebCookie webCookie;
 
-        private Dictionary<string, object> SessionContent = new Dictionary<string, object>();
+        private Dictionary<string, object>? SessionContent =null;
         private SessionModel? sessionModel = null;
+
         public DbSession(IDbSessionDAL sessionDAL, IWebCookie webCookie)
         {
             this.sessionDAL = sessionDAL;
@@ -33,6 +34,9 @@ namespace EBlog.BL.Auth
         }
         public void AddValue(string key, object value)
         {
+            if (SessionContent==null)
+                throw new Exception("Сессия не загружена");
+
             if (SessionContent.ContainsKey(key))
                 SessionContent[key] = value;
             else
@@ -40,11 +44,15 @@ namespace EBlog.BL.Auth
         }
         public void RemoveValue(string key)
         {
+            if (SessionContent == null)
+                throw new Exception("Сессия не загружена");
             if (SessionContent.ContainsKey(key))
                 SessionContent.Remove(key);
         }
         public object GetValueDef(string key, object defaultValue)
         {
+            if (SessionContent == null)
+                throw new Exception("Сессия не загружена");
             if (SessionContent.ContainsKey(key))
                 return SessionContent[key];
             return defaultValue;
@@ -82,6 +90,8 @@ namespace EBlog.BL.Auth
             sessionModel = data;
             if (data.SessionContent != null)
                 SessionContent = JsonSerializer.Deserialize<Dictionary<string, object>>(data.SessionContent) ?? new Dictionary<string, object>();
+            else
+                SessionContent = new Dictionary<string, object>();
             await this.sessionDAL.Extend(data.DbSessionId);
             return data;
         }
@@ -111,13 +121,22 @@ namespace EBlog.BL.Auth
 
         public async Task Lock()
         {
-            var data = await this.GetSession();
-            await sessionDAL.Lock(data.DbSessionId);
+            await this.GetSession();
+            if (sessionModel == null)
+                throw new Exception("Сессия не загружена");
+
+            await sessionDAL.Lock((Guid)this.sessionModel.DbSessionId);
         }
 
         public void ResetSessionCache()
         {
             sessionModel = null;
+        }
+        public async Task RemoveSessionId()
+        {
+            await GetSession();
+            if (this.sessionModel != null)
+                await sessionDAL.Remove((Guid)this.sessionModel.DbSessionId);
         }
     }
 }

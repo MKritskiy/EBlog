@@ -22,7 +22,11 @@ namespace EBlog.Controllers
         public async Task<IActionResult> Index()
         {
             var bloglist = await blog.Search(4);
-            return View(bloglist);
+            var modifiedBlogList = bloglist.Select(b => {
+                b.BlogContent = b.BlogContent?.Length <= 20 ? b.BlogContent : b.BlogContent?.Substring(0, 20) + "...";
+                return b;
+                });
+            return View(modifiedBlogList);
         }
 
         public IActionResult Privacy()

@@ -9,5 +9,6 @@ namespace EBlog.BL.Blog
         public Task<int?> Add(CommentModel model);
         public Task Update(CommentModel model);
         public Task AddOrUpdate(CommentModel model);
+        public Task Remove(CommentModel model);
     }
 }

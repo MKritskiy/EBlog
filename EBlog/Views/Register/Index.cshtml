@@ -1,22 +1,30 @@
 ﻿@model RegisterViewModel
-
 @{
     ViewData["Title"] = "Регистрация";
 }
 
-<div>
-    <form action="/register" method="post">
-        @Html.AntiForgeryToken()
-        <p>
-            <label>Почта</label>
-            <input name="Email" type="text" value="@Model.Email"/>
-            <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
-        </p>
-        <p>
-            <label>Пароль</label>
-            <input name="password" type="password"/>
-            <div class="error">@Html.ValidationMessageFor(m => m.Password)</div>
-        </p>
-        <button>Зарегистрироваться</button>
-    </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Регистрация</h2>
+                    <form action="/register" method="post" class="needs-validation"  novalidate>
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label for="inputEmail" class="form-label">Почта</label>
+                            <input name="Email" type="text" class="form-control" id="inputEmail" value="@Model.Email" placeholder="Введите вашу почту" required>
+                            <div class="invalid-feedback d-block">@Html.ValidationMessageFor(m => m.Email)</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputPassword" class="form-label">Пароль</label>
+                            <input name="Password" type="password" class="form-control" id="inputPassword" placeholder="Введите пароль" required>
+                            <div class="invalid-feedback d-block">@Html.ValidationMessageFor(m => m.Password)</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

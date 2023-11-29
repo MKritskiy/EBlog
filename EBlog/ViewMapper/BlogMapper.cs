@@ -21,6 +21,9 @@ namespace EBlog.ViewMapper
                 BlogId = model.BlogId,
                 BlogHeader = model.BlogHeader,
                 BlogContent = model.BlogContent,
+                AuthorName = model.Profile?.ProfileName ?? null,
+                ProfileImage = model.Profile?.ProfileImage ?? "\\images\\default\\Мегумин.jpeg",
+                AuthorId = model.Profile?.ProfileId,
             };
         }
     }

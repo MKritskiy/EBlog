@@ -4,25 +4,32 @@
     ViewData["Title"] = "Создание записи";
 }
 
-<div class="row">
-    <div class="col-sm-8">
-        <form action="/blogedit" method="post">
-            <input name="BlogId" type="hidden" value=@Model.BlogId />
-            @Html.AntiForgeryToken()
-            <p>
-                <div class="error">@Html.ValidationMessage("Form")</div>
-            </p>
-            <p>
-                <label>Заголовок</label>
-                <input name="BlogHeader" type="text" value="@Model.BlogHeader" class="form-control" />
-                <div class="error form-text text-muted">@Html.ValidationMessageFor(m => m.BlogHeader)</div>
-            </p>
-            <p>
-                <label>Содержимое</label>
-                <input name="BlogContent" type="text" value="@Model.BlogContent" class="form-control" />
-                <div class="error form-text text-muted">@Html.ValidationMessageFor(m => m.BlogContent)</div>
-            </p>
-            <button class="btn btn-primary">Сохранить</button>
-        </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+                    <form action="/blogedit" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <input name="BlogId" type="hidden" value=@Model.BlogId />
+                        <div class="mb-3">
+                            <div class="error">@Html.ValidationMessage("Form")</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputBlogHeader" class="form-label">Заголовок</label>
+                            <input name="BlogHeader" type="text" class="form-control" id="inputBlogHeader" value="@Model.BlogHeader" placeholder="Введите заголовок" required>
+                            <div class="invalid-feedback d-block">@Html.ValidationMessageFor(m => m.BlogHeader)</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputBlogContent" class="form-label">Содержимое</label>
+                            <textarea name="BlogContent" class="form-control" id="inputBlogContent" rows="6" placeholder="Введите содержимое" required>@Model.BlogContent</textarea>
+                            <div class="invalid-feedback d-block">@Html.ValidationMessageFor(m => m.BlogContent)</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

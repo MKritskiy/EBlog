@@ -1,10 +1,12 @@
 ﻿using EBlog.BL.Auth;
+using EBlog.BL.General;
 using EBlog.BL.Profile;
 using EBlog.DAL.Models;
 using EBlog.Middleware;
 using EBlog.Service;
 using EBlog.ViewMapper;
 using EBlog.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
@@ -87,7 +89,12 @@ namespace EBlog.Controllers
                 }
             }
             return Redirect("/profile");
-
+        }
+        [Route("/profile/logout")]
+        public ActionResult Logout()
+        {
+            currentUser.Logout();
+            return Redirect("/");
         }
     }
 }

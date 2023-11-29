@@ -7,5 +7,6 @@ namespace EBlog.BL.Auth
         Task<bool> IsLoggedInAsync();
         Task<int?> GetCurrentUserId();
         Task<ProfileModel?> GetProfile();
+        void Logout();
     }
 }

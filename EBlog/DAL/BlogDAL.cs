@@ -24,12 +24,12 @@ namespace EBlog.DAL
 
         public async Task<BlogModel?> Get(int blogId)
         {
-            return await db.Blogs.FirstOrDefaultAsync(b=>b.BlogId==blogId);
+            return await db.Blogs.Include(b => b.Profile).FirstOrDefaultAsync(b=>b.BlogId==blogId);
         }
 
-        public async Task<IEnumerable<BlogModel>> GetByUserId(int userId)
+        public async Task<IEnumerable<BlogModel>> GetByProfileId(int profileId)
         {
-            return await db.Blogs.Where(b=>b.UserId == userId).ToListAsync();
+            return await db.Blogs.Include(b=>b.Profile).Where(b=>b.ProfileId == profileId).ToListAsync();
         }
 
         public async Task<IEnumerable<BlogModel>> Search(int count)
@@ -40,6 +40,11 @@ namespace EBlog.DAL
         public async Task Update(BlogModel model)
         {
             db.Blogs.Update(model);
+            await db.SaveChangesAsync();
+        }
+        public async Task Remove(BlogModel model)
+        {
+            db.Blogs.Remove(model);
             await db.SaveChangesAsync();
         }
     }
