@@ -29,9 +29,9 @@ namespace EblogTest.Helpers
         {
             webCookie = new TestCookie();
             dbSession = new DbSession(dbSessionDAL, webCookie);
-            authBL = new Auth(authDAL, encrypt, webCookie, dbSession, userTokenDAL);
-            currentUser = new CurrentUser(dbSession, webCookie, userTokenDAL, profileDAL);
             profile = new Profile(profileDAL);
+            authBL = new Auth(authDAL, encrypt, webCookie, dbSession, userTokenDAL, profile);
+            currentUser = new CurrentUser(dbSession, webCookie, userTokenDAL, profileDAL);
             blog = new Blog(blogDAL, currentUser);
             comment = new Comment(commentDAL);
 

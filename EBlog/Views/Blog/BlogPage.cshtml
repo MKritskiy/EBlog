@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
-                            <img class="rounded-circle shadow-1-strong me-3" src="@Model.BlogViewModel?.ProfileImage" alt="avatar" width="60" height="60" />
+                            <img class="rounded-circle shadow-1-strong me-3" src="@Model.BlogViewModel?.ProfileImage" alt="Image" width="60" height="60" />
                             <div>
                                 <h6 class="fw-bold text-primary mb-1">@Model.BlogViewModel?.AuthorName</h6>
                             </div>
@@ -44,7 +44,7 @@
                             @foreach (var comment in Model.CommentViewModel)
                             {
                                 <div class="d-flex align-items-center mb-3">
-                                    <img class="rounded-circle shadow-1-strong me-3" src="@comment.ProfileImage" alt="avatar" width="60" height="60" />
+                                    <img class="rounded-circle shadow-1-strong me-3" src="@comment.ProfileImage" alt="" width="60" height="60" />
                                     <div>
                                         <h6 class="fw-bold text-primary mb-1 me-2">@comment.AuthorName</h6>
                                     </div>

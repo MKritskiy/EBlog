@@ -8,6 +8,7 @@ namespace EBlog.BL.Auth
         Task<int> Authenticate(string email, string password, bool rememberMe);
         Task<int> CreateUser(EBlog.DAL.Models.UserModel user);
         Task ValidateEmail(string email);
-        public Task Register(UserModel user);
+        Task Register(UserModel user);
+        Task LoginAsync(int id);
     }
 }

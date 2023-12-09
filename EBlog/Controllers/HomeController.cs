@@ -8,14 +8,10 @@ namespace EBlog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
-        private readonly ICurrentUser currentUser;
         private readonly IBlog blog;
 
-        public HomeController(ILogger<HomeController> logger, ICurrentUser currentUser, IBlog blog)
+        public HomeController(IBlog blog)
         {
-            this.logger = logger;
-            this.currentUser = currentUser;
             this.blog = blog;
         }
 

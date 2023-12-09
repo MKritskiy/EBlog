@@ -1,6 +1,5 @@
 ﻿ using EBlog.DAL.Models;
 using EBlog.DAL;
-using System.ComponentModel.DataAnnotations;
 using EBlog.BL.Exeption;
 using EBlog.BL.General;
 using EBlog.BL.Profile;
@@ -37,7 +36,10 @@ namespace EBlog.BL.Auth
             int id = await authDAL.CreateUser(user);
             await LoginAsync(id);
 
-            ProfileModel newProfile = new ProfileModel() {UserId=user.UserId ?? 0, ProfileName="Profile"+ (user.UserId ?? 0), ProfileImage="/images/default/Мегумин.jpeg"  };
+            ProfileModel newProfile = new ProfileModel() {
+                UserId=user.UserId ?? 0, 
+                ProfileName="Profile"+ (user.UserId ?? 0), 
+                ProfileImage="/images/default/default.jpeg"  };
             await profile.AddOrUpdate(newProfile);
 
             return id;

@@ -6,17 +6,11 @@ services:
     build:
       context: .
       dockerfile: EBlog/Dockerfile
+    ports:
+     - '80:80'
 
   postgres:
     container_name: postgres
     build: ./db
     ports:
      - '5432:5432'
-
-
-  eblogtest:
-    image: ${DOCKER_REGISTRY-}eblogtest
-    build:
-      context: .
-      dockerfile: EblogTest\Dockerfile
-

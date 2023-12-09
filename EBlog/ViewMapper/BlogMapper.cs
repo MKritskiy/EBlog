@@ -22,7 +22,7 @@ namespace EBlog.ViewMapper
                 BlogHeader = model.BlogHeader,
                 BlogContent = model.BlogContent,
                 AuthorName = model.Profile?.ProfileName ?? null,
-                ProfileImage = model.Profile?.ProfileImage ?? "\\images\\default\\Мегумин.jpeg",
+                ProfileImage = model.Profile?.ProfileImage ?? "\\images\\default\\default.jpeg",
                 AuthorId = model.Profile?.ProfileId,
             };
         }
