@@ -15,5 +15,7 @@ namespace EBlog.DAL.Models
         public DateTime LastAccessed { get; set; }
 
         public int? UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public UserModel? User { get; set; }
     }
 }

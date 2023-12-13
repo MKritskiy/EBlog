@@ -22,6 +22,7 @@ namespace EBlog.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(DbHelper.ConnString);
+
         }
     }
 }

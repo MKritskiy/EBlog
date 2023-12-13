@@ -19,6 +19,13 @@ builder.Services.AddScoped<EBlog.BL.Auth.IDbSession, EBlog.BL.Auth.DbSession>();
 builder.Services.AddScoped<EBlog.BL.General.IWebCookie, EBlog.BL.General.WebCookie>();
 builder.Services.AddMvc();
 var app = builder.Build();
+
+using (ApplicationContext db = new ApplicationContext())
+{
+    db.Database.EnsureDeleted();
+    db.Database.EnsureCreated();
+
+}
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
