@@ -8,9 +8,9 @@ namespace EBlog.Service
 
         const string FOLDER_PREFIX = "./wwwroot";
 
-        public string GetWebFileName(string filename)
+        public string GetWebFileName(string filename, Stream fileStream)
         {
-            string dir = GetWebFileFolder(filename);
+            string dir = GetWebFileFolder(fileStream);
             
             CreateFolder(FOLDER_PREFIX + dir);
 
@@ -24,6 +24,17 @@ namespace EBlog.Service
             MD5 md5hash = MD5.Create();
             byte[] inputBytes = Encoding.ASCII.GetBytes(filename);
             byte[] hashBytes = md5hash.ComputeHash(inputBytes);
+
+            string hash = Convert.ToHexString(hashBytes);
+
+            return "/images/" + hash.Substring(0, 2) + "/" +
+                hash.Substring(0, 4);
+        }
+        public string GetWebFileFolder(Stream fileStream)
+        {
+            MD5 md5hash = MD5.Create();
+            byte[] hashBytes;
+            hashBytes= md5hash.ComputeHash(fileStream);
 
             string hash = Convert.ToHexString(hashBytes);
 

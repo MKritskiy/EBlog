@@ -82,7 +82,7 @@ namespace EBlog.Controllers
                 if (Request.Form.Files.Count > 0 && Request.Form.Files[0] != null)
                 {
                     WebFile webFile = new WebFile();
-                    string filename = webFile.GetWebFileName(Request.Form.Files[0].FileName);
+                    string filename = webFile.GetWebFileName(Request.Form.Files[0].FileName, Request.Form.Files[0].OpenReadStream());
                     await webFile.UploadAndResizeImage(Request.Form.Files[0].OpenReadStream(), filename, 800, 600);
                     profileModel.ProfileImage = filename;
                     await profile.AddOrUpdate(profileModel);
