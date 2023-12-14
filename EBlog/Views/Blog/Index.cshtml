@@ -1,7 +1,10 @@
 ﻿@model BlogViewModel
 
 @{
-    ViewData["Title"] = "Создание записи";
+    if (Model.BlogId != null)
+        ViewData["Title"] = "Изменение записи";
+    else
+        ViewData["Title"] = "Создание записи";
 }
 
 <div class="container mt-5">

@@ -19,7 +19,7 @@ namespace EBlog.BL.General
             return null;
         }
 
-        public static TransactionScope CreateTransactionScope(int seconds = 6000)
+        public static TransactionScope CreateTransactionScope(int seconds = 1)
         {
             return new TransactionScope(
                 TransactionScopeOption.Required,
