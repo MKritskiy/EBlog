@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["EBlog/EBlog.csproj", "EBlog/"]
+RUN dotnet dev-certs https
 RUN dotnet restore "EBlog/EBlog.csproj"
 COPY . .
 WORKDIR "/src/EBlog"
