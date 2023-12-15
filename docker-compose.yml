@@ -6,7 +6,6 @@ services:
     build:
       context: .
       dockerfile: EBlog/Dockerfile
-    command: dotnet dev-certs https
     ports:
      - '80:80'
 
