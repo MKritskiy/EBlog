@@ -72,7 +72,7 @@ namespace EBlog.Controllers
             if (ModelState.IsValid)
             {
                 var blogModel = BlogMapper.MapBlogViewModelToBlogModel(model);
-                if (blogModel.BlogId!=null && currprofile?.ProfileId!=blogModel.ProfileId)
+                if (blogModel.BlogId!=null && !currprofile.Blogs.Any(b=>b.BlogId==blogModel.BlogId))
                     throw new Exception("Вы не имеете права на это");
                 blogModel.ProfileId = currprofile.ProfileId ?? 0;
                 await blog.AddOrUpdate(blogModel);

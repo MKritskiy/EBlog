@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Text.RegularExpressions;
 
 namespace EBlog.Controllers
 {
@@ -48,48 +48,30 @@ namespace EBlog.Controllers
 
             if (currprofile?.ProfileId != model.ProfileId)
                 throw new Exception("Error");
-
+            ProfileModel profileModel = ProfileMapper.MapProfileViewModelToProfileModel(model);
+            profileModel.UserId = (int)curruserid;
+            profileModel.ProfileImage = currprofile?.ProfileImage;
             if (ModelState.IsValid)
             {
-                ProfileModel profileModel = ProfileMapper.MapProfileViewModelToProfileModel(model);
-                profileModel.UserId = (int)curruserid;
-                profileModel.ProfileImage = currprofile?.ProfileImage;
-                await profile.AddOrUpdate(profileModel);
-                return Redirect("/");
-            }
-            return View("Index", new ProfileViewModel());
-        }
-
-
-        [HttpPost]
-        [Route("/profile/uploadimage")]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> ImageSave(int? profileId)
-        {
-            int? curruserid = await currentUser.GetCurrentUserId();
-            if (curruserid == null)
-                throw new Exception("Пользователь не найден");
-
-            var currprofile = await profile.Get((int)curruserid);
-
-            if (currprofile?.ProfileId != profileId)
-                throw new Exception("Error");
-
-            if (ModelState.IsValid)
-            {
-                ProfileModel profileModel = currprofile ?? new ProfileModel();
-                profileModel.UserId = (int)curruserid;
                 if (Request.Form.Files.Count > 0 && Request.Form.Files[0] != null)
                 {
+                    var isValidExtension = Regex.IsMatch(Request.Form.Files[0].FileName, @"(.jpg|.gif|.png|.jpeg|.tiff|.pbm|.bmp|.webp|.tga)$");
+                    if (!isValidExtension)
+                    {
+                        ModelState.AddModelError("ProfileImage", "Некорректный формат файла");
+                        return View("Index", ProfileMapper.MapProfileModelToProfileViewModel(profileModel));
+                    }
                     WebFile webFile = new WebFile();
                     string filename = webFile.GetWebFileName(Request.Form.Files[0].FileName, Request.Form.Files[0].OpenReadStream());
                     await webFile.UploadAndResizeImage(Request.Form.Files[0].OpenReadStream(), filename, 800, 600);
                     profileModel.ProfileImage = filename;
-                    await profile.AddOrUpdate(profileModel);
                 }
+                await profile.AddOrUpdate(profileModel);
             }
-            return Redirect("/profile");
+            return View("Index", ProfileMapper.MapProfileModelToProfileViewModel(profileModel));
         }
+
+
         [Route("/profile/logout")]
         public ActionResult Logout()
         {
