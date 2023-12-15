@@ -9,8 +9,10 @@ namespace EBlog.DAL.Models
         public int? CommentId { get; set; }
         public string? CommentHeader { get; set; }
         public string? CommentContent { get; set; }
-        public int BlogId { get; set; }
 
+        public int BlogId { get; set; }
+        [ForeignKey(nameof(BlogId))]
+        public BlogModel? Blog { get; set; }
 
         public int ProfileId { get; set; }
         [ForeignKey(nameof(ProfileId))]
